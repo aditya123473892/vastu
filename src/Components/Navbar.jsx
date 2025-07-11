@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,40 +15,42 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <span className="text-xs font-light text-gray-500 tracking-[0.2em] uppercase">
-              SMP ARCHITECTURE
-            </span>
+          <Link to="/">
+                <span className="text-xs font-light text-gray-500 tracking-[0.2em] uppercase">
+                  VASTU DESIGN CONSULTANTS
+                </span>
+              </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="flex items-center space-x-16">
               <a
-                href="#"
+                href="/project"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
                 Projects
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a
-                href="#"
+              <Link
+                to="/people"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
                 People
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
-              </a>
+              </Link>
               <a
-                href="#"
+                href="/"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
                 Press
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
               </a>
               <a
-                href="#"
+                href="/aboutus"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
-                Practice
+                About US
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
               </a>
             </div>
@@ -73,17 +76,17 @@ const Navbar = () => {
           <div className="md:hidden">
             <div className="px-2 pt-4 pb-6 space-y-4 bg-white/95 backdrop-blur-sm">
               <a
-                href="#"
+                href="/projects"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
                 Projects
               </a>
-              <a
-                href="#"
+              <Link
+                to="/people"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
                 People
-              </a>
+              </Link>
               <a
                 href="#"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
@@ -91,10 +94,10 @@ const Navbar = () => {
                 Press
               </a>
               <a
-                href="#"
+                href="/aboutus"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
-                Practice
+               About US
               </a>
             </div>
           </div>

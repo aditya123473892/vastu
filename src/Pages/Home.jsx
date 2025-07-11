@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ArchitecturePortfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -89,28 +90,30 @@ const ArchitecturePortfolio = () => {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <span className="text-xs font-light text-gray-500 tracking-[0.2em] uppercase">
-                SMP ARCHITECTURE
-              </span>
+              <Link to="/">
+                <span className="text-xs font-light text-gray-500 tracking-[0.2em] uppercase">
+                  VASTU DESIGN CONSULTANTS
+                </span>
+              </Link>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center space-x-16">
-                <a
-                  href="#"
+                <Link
+                  to="/project"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
                 >
                   Projects
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="/people"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
                 >
                   People
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
@@ -118,13 +121,13 @@ const ArchitecturePortfolio = () => {
                   Press
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a
-                  href="#"
+                <Link
+                  to="/aboutus"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
                 >
-                  Practice
+                  About US
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -147,30 +150,30 @@ const ArchitecturePortfolio = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-4 pb-6 space-y-4 bg-white/95 backdrop-blur-sm">
-                <a
-                  href="#"
+                <Link
+                  to="/project"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
                 >
                   Projects
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="/people"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
                 >
                   People
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
                 >
                   Press
                 </a>
-                <a
-                  href="#"
+                <Link
+                  to="/aboutus"
                   className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
                 >
-                  Practice
-                </a>
+                  About US
+                </Link>
               </div>
             </div>
           )}
@@ -455,7 +458,7 @@ const ArchitecturePortfolio = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div className="mb-4 sm:mb-0">
               <span className="text-xs font-light text-gray-400 tracking-[0.2em] uppercase">
-                SMP Architecture
+                VASTU DESIGN CONSULTANTS
               </span>
             </div>
             <div className="flex space-x-6 text-xs text-gray-400">
@@ -475,7 +478,7 @@ const ArchitecturePortfolio = () => {
                 href="#"
                 className="hover:text-gray-700 transition-colors duration-300"
               >
-                Site by SMP Architecture
+                Site by VASTU DESIGN CONSULTANTS
               </a>
             </div>
           </div>
