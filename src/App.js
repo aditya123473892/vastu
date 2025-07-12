@@ -5,6 +5,7 @@ import People from "./Pages/People";
 import { Routes, Route } from "react-router-dom";
 import Projects from "./Pages/Projects";
 import AboutUs from "./Pages/AboutUs";
+import ProjectDetail from "./Components/ProjectDetail";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/people" element={<People />} />
         <Route path="/project" element={<Projects />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/aboutus" element={<AboutUs/>} />
       </Routes>
     </div>

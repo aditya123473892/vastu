@@ -76,7 +76,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <div className="px-2 pt-4 pb-6 space-y-4 bg-white/95 backdrop-blur-sm">
               <a
-                href="/projects"
+                href="/project"
                 className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
                 Projects
