@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,11 +14,11 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-          <Link to="/">
-                <span className="text-xs font-light text-gray-500 tracking-[0.2em] uppercase">
-                  VASTU DESIGN CONSULTANTS
-                </span>
-              </Link>
+            <a href="/">
+              <span className="text-xs font-medium text-gray-700 tracking-[0.2em] uppercase">
+                VASTU DESIGN CONSULTANTS
+              </span>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
@@ -27,31 +26,40 @@ const Navbar = () => {
             <div className="flex items-center space-x-16">
               <a
                 href="/project"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
                 Projects
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-600 transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <Link
-                to="/people"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
+              <a
+                href="/people"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
                 People
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-600 transition-all duration-300 group-hover:w-full"></span>
+              </a>
               <a
                 href="/"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
                 Press
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-600 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a
+                href="https://vastudesignslimited.blogspot.com/2025/07/this-is-dummy-vlog.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
+              >
+                Blog
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-600 transition-all duration-300 group-hover:w-full"></span>
               </a>
               <a
                 href="/aboutus"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 tracking-[0.15em] uppercase transition-colors duration-300 relative group"
               >
                 About US
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-600 transition-all duration-300 group-hover:w-full"></span>
               </a>
             </div>
           </div>
@@ -60,7 +68,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors duration-300"
+              className="inline-flex items-center justify-center p-2 text-gray-600 hover:text-gray-900 focus:outline-none transition-colors duration-300"
             >
               {isMenuOpen ? (
                 <X className="h-5 w-5" />
@@ -77,27 +85,35 @@ const Navbar = () => {
             <div className="px-2 pt-4 pb-6 space-y-4 bg-white/95 backdrop-blur-sm">
               <a
                 href="/project"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
                 Projects
               </a>
-              <Link
-                to="/people"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
+              <a
+                href="/people"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
                 People
-              </Link>
+              </a>
               <a
                 href="#"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
                 Press
               </a>
               <a
-                href="/aboutus"
-                className="text-xs font-light text-gray-400 hover:text-gray-700 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
+                href="https://vastudesignslimited.blogspot.com/2025/07/this-is-dummy-vlog.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
               >
-               About US
+                Blog
+              </a>
+              <a
+                href="/aboutus"
+                className="text-xs font-medium text-gray-600 hover:text-gray-900 block px-4 py-3 tracking-[0.15em] uppercase transition-colors duration-300"
+              >
+                About US
               </a>
             </div>
           </div>
