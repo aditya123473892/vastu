@@ -1,15 +1,32 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import { projects } from "../data";
-import ProjectCard from "../Components/ProjectCard";
+import { useImages } from "../services/api";
 
 const ArchitecturePortfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { images, loading, error } = useImages();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // Filter images to only include 'built' or 'unbuilt' categories
+  const filteredImages = images.filter(img => 
+    img.category === 'built' || img.category === 'unbuilt'
+  );
+
+  // Group filtered images by title
+  const groupedImages = filteredImages.reduce((acc, img) => {
+    if (!acc[img.title]) {
+      acc[img.title] = [];
+    }
+    acc[img.title].push(img);
+    return acc;
+  }, {});
+
+  // Convert to array for rendering
+  const allProjects = Object.entries(groupedImages);
 
   return (
     <div className="min-h-screen bg-white">
@@ -42,18 +59,62 @@ const ArchitecturePortfolio = () => {
             <div className="w-12 h-px bg-gray-300"></div>
           </div>
 
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
+          {/* Loading and Error States */}
+          {loading && (
+            <div className="text-center py-16">
+              <p className="text-gray-500">Loading projects...</p>
+            </div>
+          )}
+          
+          {error && (
+            <div className="text-center py-16">
+              <p className="text-red-500">{error}</p>
+            </div>
+          )}
+
+          {/* Projects Grid - ONLY BUILT OR UNBUILT PROJECTS */}
+          {!loading && !error && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+              {allProjects.map(([title, groupImages]) => (
+                <Link 
+                  key={title} 
+                  to={`/gallery/${encodeURIComponent(title)}`}
+                  className="group cursor-pointer"
+                >
+                  <div className="aspect-[4/3] bg-gray-100 mb-6 overflow-hidden relative">
+                    <img
+                      src={`http://localhost:4000/api/images/${groupImages[0].id}/data`}
+                      alt={title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    {groupImages.length > 1 && (
+                      <div className="absolute top-4 right-4 bg-white bg-opacity-90 rounded-full w-10 h-10 flex items-center justify-center">
+                        <span className="text-sm font-medium text-gray-700">+{groupImages.length - 1}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-light text-gray-900 tracking-wide">
+                      {title}
+                    </h3>
+                    <p className="text-xs font-light text-gray-500 tracking-[0.15em] uppercase">
+                      {groupImages[0].category || 'Uncategorized'}
+                    </p>
+                    {groupImages[0].description && (
+                      <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                        {groupImages[0].description}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        {/* Bottom text section */}
         {/* About Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16 lg:mb-24">
           {/* Left side - Large black and white image */}
