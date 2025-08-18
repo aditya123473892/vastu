@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
   IMAGES: `${BASE_URL}/images`,
   IMAGE_BY_ID: (id) => `${BASE_URL}/images/${id}`,
   IMAGE_DATA: (id) => `${BASE_URL}/images/${id}/data`,
+  IMAGE_FILE: (id) => `${BASE_URL}/images/${id}/file`,
   REGENERATE_TOKEN: (id) => `${BASE_URL}/images/${id}/regenerate-token`,
   REVOKE_ACCESS: (id) => `${BASE_URL}/images/${id}/revoke-access`,
 };
@@ -108,7 +109,7 @@ export const imageService = {
       // No Content-Type header as FormData sets it automatically with boundary
     }),
 
-  // Update image
+  // Update image metadata
   updateImage: (id, data) =>
     fetchAPI(API_ENDPOINTS.IMAGE_BY_ID(id), {
       method: "PUT",
@@ -116,6 +117,14 @@ export const imageService = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+    }),
+
+  // Update image file
+  updateImageFile: (id, formData) =>
+    fetchAPI(API_ENDPOINTS.IMAGE_FILE(id), {
+      method: "PUT",
+      body: formData,
+      // No Content-Type header as FormData sets it automatically with boundary
     }),
 
   // Delete image
