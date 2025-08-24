@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { imageService, useImages } from "../services/api";
 import UploadSection from "../Components/Uploadsection";
 import GallerySection from "../Components/GallerySection";
@@ -6,6 +7,7 @@ import EditSection from "../Components/Editsection";
 import AccessControlSection from "../Components/AcessControlSection";
 
 const AdminPage = () => {
+  const location = useLocation();
   const [categoryFilter, setCategoryFilter] = useState("");
   const {
     images,
@@ -13,6 +15,9 @@ const AdminPage = () => {
     error: imagesError,
     fetchImages,
   } = useImages({ category: categoryFilter });
+
+  // Dynamic dashboard title based on current route
+  const dashboardTitle = location.pathname === "/secret" ? "Secret Dashboard" : "Admin Dashboard";
 
   // Form and editing states
   const [formData, setFormData] = useState({
@@ -453,85 +458,147 @@ const AdminPage = () => {
     });
   };
 
-  // Sidebar navigation items
-  const sidebarItems = [
-    {
-      id: "upload",
-      label: "Upload Images",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "gallery",
-      label: "Image Gallery",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "edit",
-      label: "Edit Images",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "access",
-      label: "Access Control",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-          />
-        </svg>
-      ),
-    },
-  ];
+  // Sidebar navigation items - dynamic based on route
+  const sidebarItems = location.pathname === "/secret" 
+    ? [
+        // Secret Dashboard specific navigation
+        {
+          id: "upload",
+          label: "Upload Secret Files",
+          icon: (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "gallery",
+          label: "Secret Files Gallery",
+          icon: (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "access",
+          label: "Access Control",
+          icon: (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          ),
+        },
+      ]
+    : [
+        // Regular Admin Dashboard navigation
+        {
+          id: "upload",
+          label: "Upload Images",
+          icon: (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "gallery",
+          label: "Image Gallery",
+          icon: (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "edit",
+          label: "Edit Images",
+          icon: (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "secret",
+          label: "Access Secret",
+          icon: (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              />
+            </svg>
+          ),
+        },
+      ];
 
   // Render content based on active section
   const renderContent = () => {
@@ -608,6 +675,39 @@ const AdminPage = () => {
             setSuccessMessage={setSuccessMessage}
             imageService={imageService}
           />
+        );
+
+      case "secret":
+        return (
+          <div className="bg-white shadow rounded-lg p-6">
+            <div className="text-center">
+              <h2 className="text-xl font-medium text-gray-900 mb-4">
+                Access Secret Files
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Manage and access your secret files. These files require special access tokens to view.
+              </p>
+              <a
+                href="/secret"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              >
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
+                </svg>
+                Go to Secret Upload
+              </a>
+            </div>
+          </div>
         );
 
       default:
@@ -748,13 +848,20 @@ const AdminPage = () => {
         <div className="w-64 bg-white shadow-lg min-h-screen">
           <div className="p-6">
             <h1 className="text-2xl font-bold text-gray-900 mb-8">
-              Admin Dashboard
+              {dashboardTitle}
             </h1>
             <nav className="space-y-2">
               {sidebarItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => setActiveSection(item.id)}
+                  onClick={() => {
+                    if (item.id === "admin") {
+                      // Navigate back to admin route
+                      window.location.href = "/admin";
+                    } else {
+                      setActiveSection(item.id);
+                    }
+                  }}
                   className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                     activeSection === item.id
                       ? "bg-indigo-100 text-indigo-700"
@@ -763,7 +870,7 @@ const AdminPage = () => {
                 >
                   {item.icon}
                   <span>{item.label}</span>
-                </button>
+             </button>
               ))}
             </nav>
           </div>
