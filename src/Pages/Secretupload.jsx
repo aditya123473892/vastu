@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { imageService, useImages } from "../services/api";
-import UploadSection from "../Components/Uploadsection";
+
 import GallerySection from "../Components/GallerySection";
 import EditSection from "../Components/Editsection";
 import AccessControlSection from "../Components/AcessControlSection";
+import UploadSecret from "../Components/UploadSecret";
 
-const AdminPage = () => {
+const SecretUpload = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const {
     images,
@@ -20,7 +21,7 @@ const AdminPage = () => {
     description: "",
     category: "unbuilt",
     project_id: "",
-    images: [],
+    files: [], // FIXED: Use 'files' instead of 'images'
   });
   const [previewUrls, setPreviewUrls] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -83,6 +84,7 @@ const AdminPage = () => {
   }, {});
 
   // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -106,25 +108,28 @@ const AdminPage = () => {
         });
 
         // Update image file if a new file was selected
-        if (formData.images && formData.images.length > 0) {
+        // FIXED: Check for 'files' instead of 'images'
+        if (formData.files && formData.files.length > 0) {
           const imageFormData = new FormData();
-          imageFormData.append("image", formData.images[0]);
+          imageFormData.append("image", formData.files[0]);
           await imageService.updateImageFile(currentImageId, imageFormData);
         }
 
         setSuccessMessage("Image updated successfully!");
       } else {
-        if (!formData.images || formData.images.length === 0) {
-          throw new Error("Please select at least one image to upload");
+        // FIXED: Check for 'files' instead of 'images'
+        if (!formData.files || formData.files.length === 0) {
+          throw new Error("Please select at least one file to upload");
         }
 
-        formData.images.forEach((image) => {
-          formDataToSend.append("images", image);
+        // FIXED: Use 'files' instead of 'images'
+        formData.files.forEach((file) => {
+          formDataToSend.append("images", file); // API expects 'images' field name
         });
 
         const result = await imageService.createImage(formDataToSend);
         setSuccessMessage(
-          `${result.images.length} image(s) uploaded successfully!`
+          `${result.images.length} file(s) uploaded successfully!`
         );
       }
 
@@ -145,7 +150,6 @@ const AdminPage = () => {
     });
   };
 
-  // Handle image file selection for editing
   const handleFileChangeForEdit = (e) => {
     const files = Array.from(e.target.files);
 
@@ -168,7 +172,7 @@ const AdminPage = () => {
       // For editing mode, only allow single file selection
       setFormData({
         ...formData,
-        images: [files[0]], // Only take the first file for editing
+        files: [files[0]], // FIXED: Use 'files' instead of 'images'
       });
 
       // Generate preview URL for the single file
@@ -180,37 +184,13 @@ const AdminPage = () => {
     }
   };
 
-  // Handle edit button click for a project (by title)
-  const handleEditProject = (title) => {
-    const projectImages = groupedImages[title];
-    if (projectImages && projectImages.length > 0) {
-      const firstImage = projectImages[0];
-      setFormData({
-        title: firstImage.title,
-        description: firstImage.description || "",
-        category: firstImage.category || "unbuilt",
-        project_id: firstImage.project_id || "",
-        images: [],
-      });
-      setCurrentImageId(firstImage.id);
-      setIsEditing(true);
-      setSelectedProject(title);
-      setProjectImages(projectImages);
-      setEditingMode("project");
-      setEditingImageIndex(null);
-      setActiveSection("edit");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  // Handle edit button click for individual image
   const handleEdit = (image) => {
     setFormData({
       title: image.title,
       description: image.description || "",
       category: image.category || "unbuilt",
       project_id: image.project_id || "",
-      images: [],
+      files: [], // FIXED: Use 'files' instead of 'images'
     });
     setCurrentImageId(image.id);
     setIsEditing(true);
@@ -228,14 +208,35 @@ const AdminPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Handle edit individual image within a project
+  const handleEditProject = (title) => {
+    const projectImages = groupedImages[title];
+    if (projectImages && projectImages.length > 0) {
+      const firstImage = projectImages[0];
+      setFormData({
+        title: firstImage.title,
+        description: firstImage.description || "",
+        category: firstImage.category || "unbuilt",
+        project_id: firstImage.project_id || "",
+        files: [], // FIXED: Use 'files' instead of 'images'
+      });
+      setCurrentImageId(firstImage.id);
+      setIsEditing(true);
+      setSelectedProject(title);
+      setProjectImages(projectImages);
+      setEditingMode("project");
+      setEditingImageIndex(null);
+      setActiveSection("edit");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const handleEditProjectImage = (image, index) => {
     setFormData({
       title: image.title,
       description: image.description || "",
       category: image.category || "unbuilt",
       project_id: image.project_id || "",
-      images: [],
+      files: [], // FIXED: Use 'files' instead of 'images'
     });
     setCurrentImageId(image.id);
     setIsEditing(true);
@@ -249,6 +250,8 @@ const AdminPage = () => {
     ]);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Handle edit button click for individual image
 
   // Handle delete button click for a project (by title)
   const handleDeleteProject = async (title) => {
@@ -308,7 +311,7 @@ const AdminPage = () => {
       description: "",
       category: "unbuilt",
       project_id: "",
-      images: [],
+      files: [], // FIXED: Use 'files' instead of 'images'
     });
     setPreviewUrls([]);
     setIsEditing(false);
@@ -538,7 +541,7 @@ const AdminPage = () => {
     switch (activeSection) {
       case "upload":
         return (
-          <UploadSection
+          <UploadSecret
             formData={formData}
             setFormData={setFormData}
             previewUrls={previewUrls}
@@ -793,4 +796,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default SecretUpload;

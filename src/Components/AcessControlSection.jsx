@@ -1,0 +1,238 @@
+import React, { useRef, useEffect } from "react";
+
+const AccessControlSection = ({
+  images,
+  shareLink,
+  setShareLink,
+  shareLinkRef,
+  handleShareProject,
+  handleRegenerateToken,
+  handleRevokeAccess,
+  successMessage,
+  setSuccessMessage,
+  imageService,
+}) => {
+  const secretImages = images.filter((img) => img.category === "secret");
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareLink);
+    setSuccessMessage("Link copied to clipboard!");
+  };
+
+  return (
+    <div className="bg-white shadow rounded-lg p-6">
+      <h2 className="text-xl font-medium text-gray-900 mb-4">
+        Access Control & Sharing
+      </h2>
+
+      {shareLink ? (
+        <div className="p-4 bg-gray-50 rounded-md">
+          <h3 className="text-sm font-medium text-gray-700 mb-2">
+            Shareable Link:
+          </h3>
+          <div className="flex">
+            <input
+              ref={shareLinkRef}
+              type="text"
+              value={shareLink}
+              readOnly
+              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-l-md"
+            />
+            <button
+              type="button"
+              onClick={copyToClipboard}
+              className="inline-flex items-center px-4 py-2 border border-l-0 border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none"
+            >
+              Copy
+            </button>
+          </div>
+          <p className="mt-1 text-xs text-gray-500">
+            Share this link with your client. They will be able to view the
+            project without needing to log in.
+          </p>
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-gray-500">
+            No active share link. Use the "Share Link" button on any secret
+            project to generate a shareable link.
+          </p>
+        </div>
+      )}
+
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold text-gray-900 mb-6">
+          Secret Projects
+        </h3>
+
+        {secretImages.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {secretImages.map((image) => (
+              <div
+                key={image.id}
+                className="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
+              >
+                {/* Card Header with Image */}
+                <div className="relative h-48 bg-gradient-to-br from-indigo-50 to-purple-50">
+                  <img
+                    src={imageService.getImageDataUrl(
+                      image.id,
+                      image.access_token
+                    )}
+                    alt={image.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {/* Overlay with project info */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h4 className="text-lg font-bold text-white mb-1 truncate">
+                        {image.title}
+                      </h4>
+                      <p className="text-sm text-gray-200">
+                        Project #{image.project_id || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Secret Badge */}
+                  <div className="absolute top-4 right-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 border border-purple-200">
+                      <svg
+                        className="w-3 h-3 mr-1"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Secret
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-6">
+                  {/* Project Details */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-600">
+                        Status
+                      </span>
+                      <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full font-medium">
+                        Active
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-600">
+                        Access Type
+                      </span>
+                      <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
+                        Token-based
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => handleShareProject(image)}
+                      className="w-full flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+                        />
+                      </svg>
+                      Share Link
+                    </button>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => handleRegenerateToken(image.id)}
+                        className="flex items-center justify-center px-3 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold rounded-lg hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+                      >
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                          />
+                        </svg>
+                        New Token
+                      </button>
+                      <button
+                        onClick={() => handleRevokeAccess(image.id)}
+                        className="flex items-center justify-center px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-semibold rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+                      >
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L5.636 5.636"
+                          />
+                        </svg>
+                        Revoke
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hover Effect Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/0 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Empty State */
+          <div className="text-center py-12">
+            <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <svg
+                className="w-12 h-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No Secret Projects
+            </h3>
+            <p className="text-gray-500">
+              Create secret projects to enable secure sharing with clients.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AccessControlSection;

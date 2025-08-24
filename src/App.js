@@ -12,7 +12,8 @@ import ImageDetail from "./Components/ImageDetail";
 import ViewProject from "./Components/ViewProject";
 import { AuthProvider } from "./services/authcontext"; // Import from your auth file
 import ProtectedRoute from "./services/protectedroutes"; // Import your protected route component
-import Login from "./Pages/Login"; // Import your login page component
+import Login from "./Pages/Login";
+import SecretUpload from "./Pages/Secretupload";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/gallery/:title" element={<ImageDetail />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
+
           <Route
             path="/admin"
             element={
@@ -36,6 +38,16 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/secret"
+            element={
+              <ProtectedRoute>
+                <SecretUpload />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/view-project/:id" element={<ViewProject />} />
         </Routes>
       </div>
