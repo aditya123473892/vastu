@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const UploadSecret = ({
   formData,
@@ -12,6 +12,16 @@ const UploadSecret = ({
   projects,
 }) => {
   const [dragActive, setDragActive] = useState(false);
+
+  // Fix: Set category to "secret" when component mounts and whenever formData changes
+  useEffect(() => {
+    if (formData.category !== "secret") {
+      setFormData((prev) => ({
+        ...prev,
+        category: "secret",
+      }));
+    }
+  }, []); // Run only on mount
 
   // Allowed file types
   const allowedFileTypes = {
@@ -49,6 +59,12 @@ const UploadSecret = ({
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Fix: Prevent category from being changed from "secret"
+    if (name === "category") {
+      return; // Don't allow category changes
+    }
+
     setFormData({
       ...formData,
       [name]: value,
@@ -275,6 +291,8 @@ const UploadSecret = ({
                 readOnly
                 className="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
               />
+              {/* Fix: Add hidden input to ensure "secret" value is submitted */}
+              <input type="hidden" name="category" value="secret" />
             </div>
           </div>
 
