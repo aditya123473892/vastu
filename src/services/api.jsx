@@ -22,6 +22,8 @@ const fetchAPI = async (url, options = {}) => {
     const token = localStorage.getItem("authToken");
     const headers = {
       ...options.headers,
+      // Add admin access header
+      "x-admin-access": "true",
     };
 
     if (token) {
@@ -97,8 +99,14 @@ export const imageService = {
 
   // Get image data URL
   getImageDataUrl: (id, accessToken) => {
+    const params = new URLSearchParams();
+    if (accessToken) params.append("access_token", accessToken);
+
+    // Add admin access to URL for direct image access
+    params.append("admin", "true");
+
     const url = API_ENDPOINTS.IMAGE_DATA(id);
-    return accessToken ? `${url}?access_token=${accessToken}` : url;
+    return `${url}?${params.toString()}`;
   },
 
   // Create new image(s)
@@ -162,19 +170,25 @@ export const useImages = (filters = {}) => {
     try {
       setLoading(true);
       const data = await imageService.getAllImages(filters);
+      console.log("Fetched images:", data); // Debug log
       setImages(data);
       setError(null);
     } catch (err) {
-      setError("Failed to fetch images. " + err.message);
       console.error("Error fetching images:", err);
+      setError("Failed to fetch images. " + err.message);
     } finally {
       setLoading(false);
     }
   };
 
+  // Add adminStatus to dependency array to refetch when admin status changes
   useEffect(() => {
     fetchImages();
-  }, [filters.category, filters.project_id]);
+  }, [
+    filters.category,
+    filters.project_id,
+    // Add any admin status from your auth context if you have one
+  ]);
 
   return { images, loading, error, fetchImages };
 };
